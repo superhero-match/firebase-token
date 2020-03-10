@@ -1,0 +1,11 @@
+app:
+  port: ':6000'
+  cert_file: './cmd/api/certificate.pem'
+  key_file: './cmd/api/key.pem'
+  time_format: '2006-01-02T15:04:05'
+
+producer:
+  brokers: ['localhost:9092']
+  topic: 'update.firebase.token'
+  batch_size: 1
+  batch_timeout: 10
