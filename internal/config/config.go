@@ -21,6 +21,7 @@ import (
 type Config struct {
 	App      *App
 	Producer *Producer
+	Health   *Health
 }
 
 // NewConfig returns the configuration.

@@ -11,41 +11,23 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package main
+package health
 
 import (
-	"github.com/superhero-match/firebase-token/cmd/api/controller"
+	"fmt"
 	"github.com/superhero-match/firebase-token/internal/config"
-	"github.com/superhero-match/firebase-token/internal/health"
 )
 
-func main() {
-	cfg, err := config.NewConfig()
-	if err != nil {
-		panic(err)
+// Client holds health client related data.
+type Client struct {
+	HealthServerURL string
+	ContentType     string
+}
+
+// NewClient return new health client.
+func NewClient(cfg *config.Config) *Client {
+	return &Client{
+		HealthServerURL: fmt.Sprintf("http://%s%s%s", cfg.Health.Address, cfg.Health.Port, cfg.Health.ShutdownEndpoint),
+		ContentType:     cfg.Health.ContentType,
 	}
-
-	client := health.NewClient(cfg)
-
-	ctrl, err := controller.NewController(cfg)
-	if err != nil {
-		_ = client.ShutdownHealthServer()
-
-		panic(err)
-	}
-
-	r := ctrl.RegisterRoutes()
-
-	err = r.RunTLS(
-		cfg.App.Port,
-		cfg.App.CertFile,
-		cfg.App.KeyFile,
-	)
-	if err != nil {
-		_ = client.ShutdownHealthServer()
-
-		panic(err)
-	}
-
-	_ = client.ShutdownHealthServer()
 }
