@@ -11,7 +11,6 @@ producer:
   batch_timeout: 10
 
 health:
-  address: '192.168.0.101'
   port: ':8110'
   shutdown_endpoint: '/api/v1/firebase_token_health/shutdown'
   content_type: 'application/json'
