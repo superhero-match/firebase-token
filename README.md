@@ -2,7 +2,7 @@
 Superhero Match is an open source dating app.
 
 ## firebase-token
-This micro-service is responsible for handling Firebase messaging token update functionality. 
+This micro-service is responsible for handling Firebase user messaging token update functionality. 
 
 ## Becoming Contributor
 If you want to become contributor, please send email to this address - `superheromatch@gmail.com`.
