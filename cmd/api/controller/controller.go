@@ -43,9 +43,6 @@ func (ctl *Controller) RegisterRoutes() *gin.Engine {
 
 	sr := router.Group("/api/v1/firebase_token")
 
-	// Middleware.
-	// sr.Use(c.Authorize)
-
 	// Routes.
 	sr.POST("/update_messaging_token", ctl.UpdateToken)
 
