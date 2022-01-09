@@ -11,28 +11,15 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package main
+package controller
 
 import (
-	"github.com/superhero-match/firebase-token/cmd/api/controller"
-	"github.com/superhero-match/firebase-token/internal/config"
+	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
-func main() {
-	cfg, err := config.NewConfig()
-	if err != nil {
-		panic(err)
-	}
-
-	ctrl, err := controller.NewController(cfg)
-	if err != nil {
-		panic(err)
-	}
-
-	r := ctrl.RegisterRoutes()
-
-	err = r.Run(cfg.App.Port)
-	if err != nil {
-		panic(err)
-	}
+// Health is used for health checks from loadbalancer.
+func (ctl *Controller) Health(c *gin.Context) {
+	c.Status(http.StatusOK)
 }

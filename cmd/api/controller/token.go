@@ -18,20 +18,21 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	ctrl "github.com/superhero-match/firebase-token/cmd/api/model"
 	"go.uber.org/zap"
+
+	ctrl "github.com/superhero-match/firebase-token/cmd/api/model"
 )
 
-// Match publishes new match on Kafka for it to be save to DB.
+// UpdateToken publishes updated Firebase token on Kafka for it to be saved to DB and cache.
 func (ctl *Controller) UpdateToken(c *gin.Context) {
 	var req ctrl.Request
 
 	err := c.BindJSON(&req)
 	if checkError(err, c) {
-		ctl.Service.Logger.Error(
+		ctl.Logger.Error(
 			"failed to bind JSON to value of type Request",
 			zap.String("err", err.Error()),
-			zap.String("time", time.Now().UTC().Format(ctl.Service.TimeFormat)),
+			zap.String("time", time.Now().UTC().Format(ctl.TimeFormat)),
 		)
 
 		return
@@ -40,13 +41,13 @@ func (ctl *Controller) UpdateToken(c *gin.Context) {
 	err = ctl.Service.UpdateToken(ctrl.FirebaseMessagingToken{
 		Token:       req.Token,
 		SuperheroID: req.SuperheroID,
-		UpdatedAt:   time.Now().UTC().Format(ctl.Service.TimeFormat),
+		UpdatedAt:   time.Now().UTC().Format(ctl.TimeFormat),
 	})
 	if checkError(err, c) {
-		ctl.Service.Logger.Error(
+		ctl.Logger.Error(
 			"failed while executing service.UpdateToken()",
 			zap.String("err", err.Error()),
-			zap.String("time", time.Now().UTC().Format(ctl.Service.TimeFormat)),
+			zap.String("time", time.Now().UTC().Format(ctl.TimeFormat)),
 		)
 
 		return

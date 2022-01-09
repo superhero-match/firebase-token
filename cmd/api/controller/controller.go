@@ -15,6 +15,7 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 
 	"github.com/superhero-match/firebase-token/cmd/api/service"
 	"github.com/superhero-match/firebase-token/internal/config"
@@ -22,7 +23,9 @@ import (
 
 // Controller holds the Controller data.
 type Controller struct {
-	Service *service.Service
+	Service    service.Service
+	Logger     *zap.Logger
+	TimeFormat string
 }
 
 // NewController returns new controller.
@@ -32,8 +35,17 @@ func NewController(cfg *config.Config) (*Controller, error) {
 		return nil, err
 	}
 
+	logger, err := zap.NewProduction()
+	if err != nil {
+		return nil, err
+	}
+
+	defer logger.Sync()
+
 	return &Controller{
-		Service: srv,
+		Service:    srv,
+		Logger:     logger,
+		TimeFormat: cfg.App.TimeFormat,
 	}, nil
 }
 
@@ -45,6 +57,7 @@ func (ctl *Controller) RegisterRoutes() *gin.Engine {
 
 	// Routes.
 	sr.POST("/update_messaging_token", ctl.UpdateToken)
+	sr.GET("/health", ctl.Health)
 
 	return router
 }
