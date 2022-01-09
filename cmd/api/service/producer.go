@@ -20,6 +20,6 @@ import (
 
 // UpdateToken publishes updated Firebase token on Kafka topic for it to be
 // consumed by consumer and updated in Cache and DB.
-func (s *Service) UpdateToken(m model.FirebaseMessagingToken) error {
+func (s *service) UpdateToken(m model.FirebaseMessagingToken) error {
 	return s.Producer.UpdateToken(mapper.MapAPITokenToProducer(m))
 }

@@ -14,30 +14,24 @@
 package service
 
 import (
+	"github.com/superhero-match/firebase-token/cmd/api/model"
 	"github.com/superhero-match/firebase-token/internal/config"
 	"github.com/superhero-match/firebase-token/internal/producer"
-	"go.uber.org/zap"
 )
 
-// Service holds all the different services that are used when handling request.
-type Service struct {
-	Producer   *producer.Producer
-	Logger     *zap.Logger
-	TimeFormat string
+// Service interface defines service methods.
+type Service interface {
+	UpdateToken(m model.FirebaseMessagingToken) error
+}
+
+// service holds all the different services that are used when handling request.
+type service struct {
+	Producer producer.Producer
 }
 
 // NewService creates value of type Service.
-func NewService(cfg *config.Config) (*Service, error) {
-	logger, err := zap.NewProduction()
-	if err != nil {
-		return nil, err
-	}
-
-	defer logger.Sync()
-
-	return &Service{
-		Producer:   producer.NewProducer(cfg),
-		Logger:     logger,
-		TimeFormat: cfg.App.TimeFormat,
+func NewService(cfg *config.Config) (Service, error) {
+	return &service{
+		Producer: producer.NewProducer(cfg),
 	}, nil
 }
