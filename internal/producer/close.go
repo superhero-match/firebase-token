@@ -14,6 +14,6 @@
 package producer
 
 // Close closes the connection to Kafka.
-func (p *Producer) Close() error {
+func (p *producer) Close() error {
 	return p.Producer.Close()
 }

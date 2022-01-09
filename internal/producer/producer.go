@@ -19,24 +19,31 @@ import (
 	"github.com/segmentio/kafka-go"
 
 	"github.com/superhero-match/firebase-token/internal/config"
+	"github.com/superhero-match/firebase-token/internal/producer/model"
 )
 
-// Producer holds Kafka producer related data.
-type Producer struct {
+// Producer interface defines producer methods.
+type Producer interface {
+	UpdateToken(m model.FirebaseMessagingToken) error
+	Close() error
+}
+
+// producer holds Kafka producer related data.
+type producer struct {
 	Producer *kafka.Writer
 }
 
 // NewProducer configures Kafka producer that produces to configured topic.
-func NewProducer(cfg *config.Config) *Producer {
-	w := kafka.NewWriter(kafka.WriterConfig{
-		Brokers:      cfg.Producer.Brokers,
+func NewProducer(cfg *config.Config) Producer {
+	w := &kafka.Writer{
+		Addr:         kafka.TCP(cfg.Producer.Brokers),
 		Topic:        cfg.Producer.Topic,
 		BatchSize:    cfg.Producer.BatchSize,
 		BatchTimeout: time.Duration(cfg.Producer.BatchTimeout) * time.Millisecond,
 		Balancer:     &kafka.LeastBytes{},
-	})
+	}
 
-	return &Producer{
+	return &producer{
 		Producer: w,
 	}
 }
