@@ -16,7 +16,5 @@ package config
 // App holds the configuration values for the application.
 type App struct {
 	Port       string `env:"FIREBASE_TOKEN_APP_PORT" yaml:"port" default:":6000"`
-	CertFile   string `env:"FIREBASE_TOKEN_APP_CERT_FILE" yaml:"cert_file" default:"./cmd/api/certificate.pem"`
-	KeyFile    string `env:"FIREBASE_TOKEN_APP_KEY_FILE" yaml:"key_file" default:"./cmd/api/key.pem"`
 	TimeFormat string `env:"FIREBASE_TOKEN_APP_TIME_FORMAT" yaml:"time_format" default:"2006-01-02T15:04:05"`
 }

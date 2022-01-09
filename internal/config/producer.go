@@ -15,8 +15,8 @@ package config
 
 // Producer holds the configuration values for the Kafka producer.
 type Producer struct {
-	Brokers      []string `env:"KAFKA_BROKERS" yaml:"brokers" default:"[192.168.0.64:9092]"`
-	Topic        string   `env:"KAFKA_UPDATE_FIREBASE_TOKEN_TOPIC" yaml:"topic" default:"update.firebase.token"`
-	BatchSize    int      `env:"KAFKA_BATCH_SIZE" yaml:"batch_size" default:"1"`
-	BatchTimeout int      `env:"KAFKA_BATCH_TIMEOUT" yaml:"batch_timeout" default:"10"`
+	Brokers      string `env:"KAFKA_BROKERS" yaml:"brokers" default:"192.168.1.229:9092"`
+	Topic        string `env:"KAFKA_UPDATE_FIREBASE_TOKEN_TOPIC" yaml:"topic" default:"update.firebase.token"`
+	BatchSize    int    `env:"KAFKA_BATCH_SIZE" yaml:"batch_size" default:"1"`
+	BatchTimeout int    `env:"KAFKA_BATCH_TIMEOUT" yaml:"batch_timeout" default:"10"`
 }
